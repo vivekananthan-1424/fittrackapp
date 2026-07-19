@@ -14,7 +14,7 @@ permissions:
 concurrency:
   group: fittrack-ci-${{ github.ref }}
   cancel-in-progress: true
-  
+
 jobs:
   build-and-test:
     name: Build and Test
@@ -36,6 +36,19 @@ jobs:
 
       - name: Run tests
         run:  mvn clean test
+
+      - name: OWASP Dependency Check
+        run: ./mvnw org.owasp:dependency-check-maven:check -Dformat=ALL -DfailBuildOnCVSS=7.0
+
+      - name: Upload OWASP Dependency Check Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: owasp-dependency-check-report
+          path:
+            target/dependency-check-report.html
+            target/dependency-check-report.json
+          retention-days: 7 
 
       - name: Package Application
         run:  mvn package -DskipTests
