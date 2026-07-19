@@ -35,12 +35,12 @@ jobs:
         run:  chmod +x mvnw
 
       - name: Run tests
-        run:  mvn clean test
+        run:  ./mvnw clean test
 
       - name: SonarQube Cloud Analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          run: ./mvnw sonar:sonar
+        run: ./mvnw sonar:sonar
 
       - name: OWASP Dependency Check
         run: ./mvnw org.owasp:dependency-check-maven:check -Dformat=ALL -DfailBuildOnCVSS=7.0
@@ -50,13 +50,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: owasp-dependency-check-report
-          path:
+          path: |
             target/dependency-check-report.html
             target/dependency-check-report.json
           retention-days: 7 
 
       - name: Package Application
-        run:  mvn package -DskipTests
+        run:  ./mvnw package -DskipTests
       
       - name: Upload application artifact
         uses: actions/upload-artifact@v4
