@@ -1,0 +1,37 @@
+##------------------First code with H2 DB--------------------------------
+#server:
+  #address: 0.0.0.0
+  #port: ${PORT:8080}
+#spring:
+  #datasource:
+    #url: ${DATABASE_URL:jdbc:h2:file:./database/fittrack;MODE=PostgreSQL;AUTO_SERVER=TRUE}
+    #username: ${DB_USER:sa}
+    #password: ${DB_PASSWORD:}
+  #jpa:
+    #hibernate:
+      #ddl-auto: update
+    #open-in-view: false
+#management:
+  #endpoints:
+    #web:
+      #exposure:
+        #include: health,info,prometheus#
+        
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: fittrack
+
+profiles:
+   default: local
+
+jpa:
+  open-in-view: false
+
+management:
+   endpoints:
+     web:
+       exposure:
+         include: health,info,prometheus       
