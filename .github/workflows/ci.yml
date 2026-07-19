@@ -37,6 +37,11 @@ jobs:
       - name: Run tests
         run:  mvn clean test
 
+      - name: SonarQube Cloud Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          run: ./mvnw sonar:sonar
+
       - name: OWASP Dependency Check
         run: ./mvnw org.owasp:dependency-check-maven:check -Dformat=ALL -DfailBuildOnCVSS=7.0
 
